@@ -1,27 +1,67 @@
 # Swiss Barber
 
-One project · **one backend** (Express) · **one database** (`swiss`, MySQL).
+Swiss Barber is an online barber booking and shop management platform designed for barbershops in Switzerland.
 
-```
-swiss/
-├── backend/            Express API (port 5000) – the ONLY backend, uses DB "swiss"
-├── database/swiss.sql  Main DB dump (import this)
-├── website/            Public Laravel site (port 8000) – calls the backend API
-└── panels/
-    ├── admin/          Super-admin panel (React, port 5173)
-    └── customer/       Customer portal (React, port 5174)
-```
+## Project Panels
 
-## Setup
-1. Create the database and import it: `mysql -u root -e "CREATE DATABASE IF NOT EXISTS swiss"` then `mysql -u root swiss < database/swiss.sql`
-2. Install everything: `npm run install:all` (and run `composer install` inside `website/` if `vendor/` is missing)
-3. Start everything: `npm run dev`
+### 1. Customer Website
+Customers can browse barber shops, explore services, and book appointments online without needing an account to browse.
 
-| App | URL |
-|---|---|
-| API | http://localhost:5000/api |
-| Website | http://localhost:8000 |
-| Admin panel | http://localhost:5173/admin/login |
-| Customer portal | http://localhost:5174/customer/login |
+- **Local URL:** `http://localhost:5173`
+- **Purpose:** Browse shops, view services, and book appointments.
 
-DB settings live in `backend/.env` (`DB_NAME=swiss`). Every frontend uses `VITE_API_URL=http://localhost:5000/api`.
+### 2. Barber Admin Panel
+Barbershop owners and staff can manage their shop operations.
+
+- **Local URL:** `http://localhost:5174`
+- **Purpose:** Manage appointments, calendar, customers, services, staff, and shop details.
+
+### 3. Super Admin Panel
+The platform administrator manages registrations, shops, subscriptions, and platform operations.
+
+- **Local URL:`http://localhost:5175`
+- **Purpose:** Manage barber registrations, approve shops, and oversee subscriptions.
+
+## Technology Stack
+
+- **Frontend:** React, JavaScript, HTML, CSS
+- **Backend:** Node.js, Express.js
+- **Database:** MySQL 8
+- **API:** REST API
+- **Payments:** Stripe
+- **Tools:** Git, GitHub, Postman
+
+## Main Features
+
+- Online appointment booking
+- Multiple barbershops and branches
+- Barber and staff management
+- Service and pricing management
+- Customer management
+- Subscription plans and payment integration
+- Super admin approval workflow
+
+## Project Structure
+
+- `backend/` — Express API and backend logic
+- `database/` — MySQL schema and SQL files
+- `panels/` — Admin panel applications
+- `website/` — Website and related application files
+- `public/` — Public assets and built files
+
+## Local Setup
+
+1. Clone the repository.
+2. Install backend dependencies using `npm install` inside `backend/`.
+3. Configure your environment variables in `backend/.env`.
+4. Set up the MySQL database using the appropriate SQL file in `database/`.
+5. Start the backend using the script configured in `backend/package.json`.
+6. Install dependencies and start each frontend application in its respective folder.
+
+## Environment Variables
+
+Create local `.env` files and configure the required database, authentication, and Stripe settings. Never commit real passwords, API keys, or Stripe secret keys to GitHub.
+
+## License
+
+This project is currently maintained as a private project unless a license is added.
