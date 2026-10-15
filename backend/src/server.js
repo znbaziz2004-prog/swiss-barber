@@ -1,0 +1,127 @@
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
+
+const { pool, testConnection } = require("./config/db");
+const authRoutes = require("./routes/authRoutes");
+const shopRoutes = require("./routes/shopRoutes");
+const branchRoutes = require("./routes/branchRoutes");
+const serviceRoutes = require("./routes/serviceRoutes");
+const staffRoutes = require("./routes/staffRoutes");
+const staffServiceRoutes = require("./routes/staffServiceRoutes");
+const workingHoursRoutes = require("./routes/workingHoursRoutes");
+const blockedTimeRoutes = require("./routes/blockedTimeRoutes");
+const availabilityRoutes = require("./routes/availabilityRoutes");
+const appointmentRoutes = require("./routes/appointmentRoutes");
+const notificationRoutes = require("./routes/notificationRoutes");
+const customerRoutes = require("./routes/customerRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
+const adminOwnerRoutes = require("./routes/adminOwnerRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
+const reportRoutes = require("./routes/reportRoutes");
+const contentRoutes = require("./routes/contentRoutes");
+const customerAuthRoutes = require("./routes/customerAuthRoutes");
+const customerDashboardRoutes = require("./routes/customerDashboardRoutes");
+const barberRegistrationRoutes = require("./routes/barberRegistrationRoutes");
+const subscriptionPaymentRoutes = require("./routes/subscriptionPaymentRoutes");
+const subscriptionPlanRoutes = require("./routes/subscriptionPlanRoutes");
+const publicShopRoutes = require("./routes/publicShopRoutes");
+const subscriptionRoutes = require("./routes/subscriptionRoutes");
+const settingsRoutes = require("./routes/settingsRoutes");
+const stripeRoutes = require("./routes/stripeRoutes");
+const contactRoutes = require("./routes/contactRoutes");
+const barberTestimonialRoutes = require("./routes/barberTestimonialRoutes");
+const adminBarberTestimonialRoutes = require("./routes/adminBarberTestimonialRoutes");
+
+
+const app = express();
+
+app.use(cors());
+
+app.use(
+  "/api/stripe/webhook",
+  express.raw({ type: "application/json" })
+);
+
+app.use(express.json());
+
+app.use("/api/auth", authRoutes);
+app.use("/api/shops", shopRoutes);
+app.use("/api/branches", branchRoutes);
+app.use("/api/services", serviceRoutes);
+app.use("/api/staff", staffRoutes);
+app.use("/api/staff", staffServiceRoutes);
+app.use("/api/working-hours", workingHoursRoutes);
+app.use("/api/blocked-times", blockedTimeRoutes);
+app.use("/api/availability", availabilityRoutes);
+app.use("/api/appointments", appointmentRoutes);
+app.use("/api/notifications", notificationRoutes);
+app.use("/api/customers", customerRoutes);
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/reviews", reviewRoutes);
+app.use("/api/admin/owners", adminOwnerRoutes);
+app.use("/api/payments", paymentRoutes);
+app.use("/api/reports", reportRoutes);
+app.use("/api/content", contentRoutes);
+app.use("/api/customer-auth", customerAuthRoutes);
+app.use("/api/customer-dashboard", customerDashboardRoutes);
+app.use("/api/barber-registration", barberRegistrationRoutes);
+app.use("/api/subscription-payments", subscriptionPaymentRoutes);
+app.use("/api/subscription-plans", subscriptionPlanRoutes);
+app.use("/api/public/shops", publicShopRoutes);
+app.use("/api/subscriptions", subscriptionRoutes);
+app.use("/api/settings", settingsRoutes);
+app.use("/api/stripe", stripeRoutes);
+app.use("/api/contact", contactRoutes);
+app.use("/api/barber-testimonials", barberTestimonialRoutes);
+app.use( "/api/admin/barber-testimonials", adminBarberTestimonialRoutes);
+
+
+
+
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "Swiss Barber Backend API is running",
+  });
+});
+
+// Test MySQL connection
+app.get("/api/test-db", async (req, res) => {
+  try {
+    const [rows] = await pool.query("SELECT 1 AS connected");
+
+    res.json({
+      success: true,
+      message: "MySQL database is connected",
+      data: rows,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Database connection failed",
+    });
+  }
+});
+
+const PORT = process.env.PORT || 5000;
+
+const startServer = async () => {
+  try {
+    await testConnection();
+
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("❌ Server startup failed");
+    process.exit(1);
+  }
+};
+
+startServer();
+
+module.exports = app;

@@ -1,0 +1,23 @@
+{
+  "name": "swiss-barber",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Swiss Barber - one backend, one database (swiss), website + admin & customer panels",
+  "scripts": {
+    "install:all": "npm install && npm --prefix backend install && npm --prefix panels/admin install && npm --prefix panels/customer install && npm --prefix website install",
+    "dev": "concurrently -k -n API,WEB,WEBJS,ADMIN,CUSTOMER -c blue,green,yellow,magenta,cyan \"npm run dev:backend\" \"npm run dev:website\" \"npm run dev:website-assets\" \"npm run dev:admin\" \"npm run dev:customer\"",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:website": "cd website && php artisan serve --port=8000",
+    "dev:website-assets": "npm --prefix website run dev",
+    "dev:admin": "npm --prefix panels/admin run dev",
+    "dev:customer": "npm --prefix panels/customer run dev",
+    "build": "npm --prefix website run build && npm --prefix panels/admin run build && npm --prefix panels/customer run build",
+    "start": "npm --prefix backend start"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "dependencies": {
+    "react-router-dom": "^7.18.4"
+  }
+}
